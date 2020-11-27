@@ -1,5 +1,9 @@
+import java.util.concurrent.CyclicBarrier;
+
 public class Car implements Runnable {
     private static int CARS_COUNT;
+    public static CyclicBarrier carsReady;
+
     static {
         CARS_COUNT = 0;
     }
@@ -24,6 +28,8 @@ public class Car implements Runnable {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int)(Math.random() * 800));
             System.out.println(this.name + " готов");
+            carsReady.await();              //ожидаем, пока все потоки "скажут" готов
+
         } catch (Exception e) {
             e.printStackTrace();
         }
