@@ -1,12 +1,15 @@
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class Car implements Runnable {
+public class Car implements Runnable, Comparable<Car> {
     private static int CARS_COUNT;
     public static CyclicBarrier carsReady;
+    public static AtomicInteger ai;
 
     static {
         CARS_COUNT = 0;
     }
+    public int place;
     private Race race;
     private int speed;
     private String name;
@@ -36,5 +39,11 @@ public class Car implements Runnable {
         for (int i = 0; i < race.getStages().size(); i++) {
             race.getStages().get(i).go(this);
         }
+        this.place = ai.incrementAndGet();
+    }
+
+    @Override
+    public int compareTo(Car o) {           //для сортировки по местам
+        return this.place - o.place;
     }
 }
